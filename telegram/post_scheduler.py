@@ -35,26 +35,26 @@ class Schedule:
         posts = post_controller.db_read_post_data()
         for post in posts:
             if post.get('schedule_period') == 'everyday':
-                aioschedule.every(1).minutes.do(self.send_post, text=post.get('post_text'),
-                                                photo_id=post.get('post_photo_id'))
+                aioschedule.every().day.do(self.send_post, text=post.get('post_text'),
+                                           photo_id=post.get('post_photo_id'))
             elif post.get('schedule_period') == 'monday':
-                aioschedule.every(2).minutes.do(self.send_post, text=post.get('post_text'),
-                                                photo_id=post.get('post_photo_id'))
+                aioschedule.every().monday.do(self.send_post, text=post.get('post_text'),
+                                              photo_id=post.get('post_photo_id'))
             elif post.get('schedule_period') == 'tuesday':
-                aioschedule.every(3).minutes.do(self.send_post, text=post.get('post_text'),
-                                                photo_id=post.get('post_photo_id'))
+                aioschedule.every().tuesday.do(self.send_post, text=post.get('post_text'),
+                                               photo_id=post.get('post_photo_id'))
             elif post.get('schedule_period') == 'wednesday':
-                aioschedule.every(4).minutes.do(self.send_post, text=post.get('post_text'),
-                                                photo_id=post.get('post_photo_id'))
+                aioschedule.every().wednesday.do(self.send_post, text=post.get('post_text'),
+                                                 photo_id=post.get('post_photo_id'))
             elif post.get('schedule_period') == 'thursday':
-                aioschedule.every(5).minutes.do(self.send_post, text=post.get('post_text'),
+                aioschedule.every().thursday.do(self.send_post, text=post.get('post_text'),
                                                 photo_id=post.get('post_photo_id'))
             elif post.get('schedule_period') == 'friday':
-                aioschedule.every(6).minutes.do(self.send_post, text=post.get('post_text'),
-                                                photo_id=post.get('post_photo_id'))
+                aioschedule.every().friday.do(self.send_post, text=post.get('post_text'),
+                                              photo_id=post.get('post_photo_id'))
             elif post.get('schedule_period') == 'saturday':
-                aioschedule.every(7).minutes.do(self.send_post, text=post.get('post_text'),
+                aioschedule.every().saturday.do(self.send_post, text=post.get('post_text'),
                                                 photo_id=post.get('post_photo_id'))
             elif post.get('schedule_period') == 'sunday':
-                aioschedule.every(8).minutes.do(self.send_post, text=post.get('post_text'),
-                                                photo_id=post.get('post_photo_id'))
+                aioschedule.every().sunday.do(self.send_post, text=post.get('post_text'),
+                                              photo_id=post.get('post_photo_id'))

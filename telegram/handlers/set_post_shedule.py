@@ -38,7 +38,7 @@ class SetPost:
     async def edit_post_content(call: types.CallbackQuery, state: FSMContext):
         """Edit post content (same as add_post_content but made on callbacks)"""
         await state.finish()
-        await call.message.edit_text("👉 Напиши текст поста. Если пост с изображением, текст должен быть в подписи")
+        await call.message.answer("👉 Напиши текст поста. Если пост с изображением, текст должен быть в подписи")
         await state.set_state(PostState.wait_schedule_period.state)
 
     @staticmethod
@@ -77,7 +77,7 @@ class SetPost:
             return
         await state.update_data(schedule_time=message.text)
         user_data = await state.get_data()
-        keyboard = markups.get_shedule_confirmation_menu()
+        keyboard = markups.get_confirmation_menu('set_approve', 'set_cancel')
         if user_data.get('post_photo_id'):
             await message.answer_photo(
                 photo=user_data.get('post_photo_id'),
@@ -100,19 +100,19 @@ class SetPost:
     async def set_post_schedule(call: types.CallbackQuery, state: FSMContext):
         user_data = await state.get_data()
         post_controller.db_write_post_data(user_data)
-        await call.message.answer('👌 Пост успешно добавлен в расписание')
+        await call.message.answer('👌 Пост успешно добавлен в расписание. /setpost чтобы добавить еще')
         await state.finish()
 
     def register_handlers(self, dp: Dispatcher):
         """Register handlers"""
         dp.register_message_handler(self.add_post_content, commands='setpost',
                                     state='*')
-        dp.register_callback_query_handler(self.edit_post_content, text='schedule_cancel', state='*')
+        dp.register_callback_query_handler(self.edit_post_content, text='set_cancel', state='*')
         dp.register_message_handler(self.set_post_schedule_period, content_types=['photo', 'text'],
                                     state=PostState.wait_schedule_period)
         dp.register_callback_query_handler(self.set_post_shedule_time, Text(contains='schedule_period_'),
                                            state=PostState.wait_schedule_time)
         dp.register_message_handler(self.confirm_post_schedule, content_types='text',
                                     state=PostState.wait_schedule_approve_finish)
-        dp.register_callback_query_handler(self.set_post_schedule, text='schedule_approve',
+        dp.register_callback_query_handler(self.set_post_schedule, text='set_approve',
                                            state=PostState.wait_schedule_set_finish)

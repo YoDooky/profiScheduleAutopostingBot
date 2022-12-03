@@ -7,9 +7,10 @@ from aiogram.contrib.middlewares.logging import LoggingMiddleware
 import logging
 import uvicorn
 
-from config.bot_config import TOKEN
+from config.bot_config import TOKEN, ACCESS_ID_LIST
 from telegram.handlers import common
-from telegram.handlers import set_post_shedule, del_post_schedule
+from telegram.handlers import set_post_shedule, del_post_schedule, send_post_now
+from telegram.auth import AccessMiddleware
 
 
 class BotInit:
@@ -18,6 +19,7 @@ class BotInit:
     def __init__(self):
         self.bot = Bot(token=TOKEN, parse_mode=types.ParseMode.HTML)
         self.dp = Dispatcher(self.bot, storage=MemoryStorage())
+        self.dp.middleware.setup(AccessMiddleware(ACCESS_ID_LIST))
 
 
 def set_logging():
@@ -40,6 +42,8 @@ def init_handlers():
     user_handler = set_post_shedule.SetPost(bot)
     user_handler.register_handlers(dp)
     user_handler = del_post_schedule.DelPost(bot)
+    user_handler.register_handlers(dp)
+    user_handler = send_post_now.SendPost(bot)
     user_handler.register_handlers(dp)
 
 

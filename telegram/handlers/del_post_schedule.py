@@ -46,7 +46,7 @@ class DelPost:
         """Approve post deleting from schedule"""
         choosen_post_id = call.data.split('post_id_')[1]
         await state.update_data(post_id=choosen_post_id)
-        keyboard = markups.get_shedule_confirmation_menu()
+        keyboard = markups.get_confirmation_menu('del_approve', 'del_cancel')
         await call.message.answer('😱 Действительно хочешь удалить выбранный пост из расписания?',
                                   reply_markup=keyboard)
         await state.set_state(PostState.wait_del_post_finish.state)
@@ -56,16 +56,16 @@ class DelPost:
         """Finish deleting post from schedule"""
         user_data = await state.get_data()
         post_controller.db_del_post_data(user_data.get('post_id'))
-        await call.message.answer('👌 Выбранный пост успешно удален из расписания')
+        await call.message.answer('👌 Выбранный пост успешно удален из расписания. /delpost чтобы удалить еще')
         await state.finish()
 
     def register_handlers(self, dp: Dispatcher):
         """Register handlers"""
         dp.register_message_handler(self.del_post_schedule, commands='deletepost',
                                     state='*')
-        dp.register_callback_query_handler(self.del_post_schedule_edit, text='schedule_cancel',
+        dp.register_callback_query_handler(self.del_post_schedule_edit, text='del_cancel',
                                            state='*')
         dp.register_callback_query_handler(self.del_post_schedule_approve, Text(contains='post_id_'),
                                            state=PostState.wait_del_post_approve)
-        dp.register_callback_query_handler(self.del_post_schedule_finish, text='schedule_approve',
+        dp.register_callback_query_handler(self.del_post_schedule_finish, text='del_approve',
                                            state=PostState.wait_del_post_finish)

@@ -4,8 +4,8 @@ from dotenv import load_dotenv, find_dotenv
 load_dotenv(find_dotenv())
 
 TOKEN = os.getenv('TOKEN')
-
-TARGET_CHANNEL_ID = -1001529775545
+ACCESS_ID_LIST = [int(os.getenv('ACCESS_ID_1')), int(os.getenv('ACCESS_ID_2'))]
+TARGET_CHANNEL_ID = int(os.getenv('TARGET_CHANNEL_ID'))
 
 WEBHOOK_PATH = f"/main/{TOKEN}"
 APP_URL = os.getenv('APP_URL')

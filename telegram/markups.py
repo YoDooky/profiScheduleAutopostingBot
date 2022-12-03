@@ -2,11 +2,11 @@ from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from database.controllers import post_controller
 
 
-def get_shedule_confirmation_menu() -> InlineKeyboardMarkup:
+def get_confirmation_menu(approve_callback: str, cancel_callback: str) -> InlineKeyboardMarkup:
     menu = InlineKeyboardMarkup(row_width=2)
     buttons = [
-        InlineKeyboardButton(text='👍 Подтвердить', callback_data='schedule_approve'),
-        InlineKeyboardButton(text='❌ Отмена', callback_data='schedule_cancel')
+        InlineKeyboardButton(text='👍 Подтвердить', callback_data=approve_callback),
+        InlineKeyboardButton(text='❌ Отмена', callback_data=cancel_callback)
     ]
     for button in buttons:
         menu.insert(button)
